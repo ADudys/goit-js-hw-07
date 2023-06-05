@@ -15,3 +15,4 @@ const markup = galleryItems
 list.insertAdjacentHTML("afterbegin", markup);
 console.log(list);
 console.log(markup);
+
