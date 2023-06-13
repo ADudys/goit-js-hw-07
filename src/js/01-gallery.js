@@ -1,41 +1,44 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-console.log(galleryItems);
-
 const list = document.querySelector(".gallery");
-const div = document.querySelector("#gallery");
-list.style.display = "grid";
-list.style.listStyleType = "none";
-list.style.gap = "20px";
+list.classList.add("gallery");
+
 const markup = galleryItems
   .map(
     (img) =>
-      `<li><img src=${img.preview} data-src=${img.original} alt=${img.description} width=100% height = auto> </li>`
+      `<div class="gallery__item">
+      <a class="gallery__link" href="${img.original}">
+        <img
+          class="gallery__image"
+          src="${img.preview}"
+          data-source="${img.original}"
+          alt="${img.description}"
+        />
+      </a>
+    </div>`
   )
   .join("");
+
 list.insertAdjacentHTML("afterbegin", markup);
 
-gallery.addEventListener("click", select());
+const galleryItem = document.querySelectorAll(".gallery__item");
+const img = document.querySelectorAll(".gallery__image");
 
-function select() {
-  if (select.target.nodeName !== "IMG") {
-    return;
-  }
+list.addEventListener("click", (event) => {
+  event.preventDefault();
 
-  const selectedImage = select.target.getAttribute("data-src");
-
-  const instance = basicLightbox.create(`
-    <div class="modal">
-    <img src="${selectedImage}" width="800" height="600">
-    </div>
-`);
-
+  const selectedImg = event.target.getAttribute("data-source");
+  const instance = basicLightbox.create(
+    `
+  <img src="${selectedImg}" width="800" height="600">
+`
+  );
   instance.show();
 
-  gallery.addEventListener("keydown", (select) => {
-    if (select.key === "Escape") {
+  list.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
       instance.close();
     }
   });
-}
+});
