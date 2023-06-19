@@ -27,18 +27,23 @@ const img = document.querySelectorAll(".gallery__image");
 
 list.addEventListener("click", (event) => {
   event.preventDefault();
+  const esc = (e) => {
+    if (e.key === "Escape") instance.close();
+  };
 
   const selectedImg = event.target.getAttribute("data-source");
   const instance = basicLightbox.create(
     `
   <img src="${selectedImg}" width="800" height="600">
-`
+`,
+    {
+      onShow: () => {
+        document.addEventListener("keydown", esc);
+      },
+      onClose: () => {
+        document.removeEventListener("keydown", esc);
+      },
+    }
   );
   instance.show();
-
-  list.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      instance.close();
-    }
-  });
 });
